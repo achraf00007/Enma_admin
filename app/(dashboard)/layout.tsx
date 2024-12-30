@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import LeftSideBar from "@/components/layout/LeftSideBar";
+import TopBar from "@/components/layout/TopBar";
 
 export const metadata: Metadata = {
   title: "Enma - admin dashboard",
@@ -19,6 +20,7 @@ export default function RootLayout({
         <body>
           <div className="flex max-lg:flex-col text-grey-1">
             <LeftSideBar />
+            <TopBar />
             <div className="flex-1">
               {children}
             </div>
