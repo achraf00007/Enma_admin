@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 import Collection from "@/lib/models/Collection";
 import { auth } from "@clerk/nextjs/server";
 
+
+// create a new collection
 export const POST = async (req: NextRequest) => {
   try {
     const { userId } = await auth();
@@ -41,6 +43,8 @@ export const POST = async (req: NextRequest) => {
   }
 }
 
+
+// get all collections
 export const GET = async (req: NextRequest) => {
   try {
     await connectToDB()
