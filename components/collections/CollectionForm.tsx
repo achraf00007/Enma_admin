@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import Delete from "../custom ui/Delete";
+import { ChevronRight, X } from "lucide-react";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
@@ -79,13 +80,13 @@ export default function CollectionForm({initialData}: CollectionFormProps) {
     <div className="p-10">
       {initialData ? (
         <div className="flex items-center justify-between">
-          <p className="text-heading2-bold">Edit Collection</p>
+          <p className="text-heading2-bold text-primary-700">Edit Collection</p>
           <Delete id={initialData._id} />
         </div>
       ) : (
-        <p className="text-heading2-bold">Create Collection</p>
+        <p className="text-heading2-bold text-primary-700">Create Collection</p>
       )}
-      <Separator className="bg-grey-1 mt-4 mb-7" />
+      <Separator className="bg-primary-300 mt-4 mb-7" />
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -141,10 +142,12 @@ export default function CollectionForm({initialData}: CollectionFormProps) {
               variant="outline"
               className=""
             >
+              <X />
               Discard
             </Button>
-            <Button type="submit" className="bg-blue-1 text-white">
+            <Button type="submit" className="bg-primary-700 text-white flex items-center">
               {initialData ? "Update" : "Create"}
+              <ChevronRight />
             </Button>
           </div>
         </form>

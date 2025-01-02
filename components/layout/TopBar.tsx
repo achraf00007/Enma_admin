@@ -13,7 +13,7 @@ export default function TopBar() {
   const pathname = usePathname();
 
   return (
-    <div className="sticky top-0 z-20 w-full flex justify-between items-center px-8 py-4 bg-blue-2 shadow-xl lg:hidden">
+    <div className="sticky top-0 z-20 w-full flex justify-between items-center px-8 py-4 bg-gradient-to-r from-primary-100 to-primary-300 shadow-xl lg:hidden">
       <Image src="/logo.png" alt="Enma" width={150} height={70} />
 
       <div className="flex gap-8 max-md:hidden">
@@ -21,7 +21,7 @@ export default function TopBar() {
           <Link
             key={link.label}
             href={link.url}
-            className={`flex gap-4 text-body-medium ${pathname === link.url ? "text-blue-1" : "text-grey-1"}`}
+            className={`flex gap-4 text-body-medium ${pathname === link.url ? "text-primary-700 font-bold" : "text-grey-1"}`}
           >
             <p>{link.label}</p>
           </Link>
@@ -39,7 +39,7 @@ export default function TopBar() {
               <Link
                 key={link.label}
                 href={link.url}
-                className={`flex gap-4 text-body-medium ${pathname === link.url ? "text-blue-1" : "text-grey-1"}`}
+                className={`flex gap-4 text-body-medium ${pathname === link.url ? "text-primary-700 font-bold" : "text-grey-1"}`}
               >
                 {link.icon} <p>{link.label}</p>
               </Link>

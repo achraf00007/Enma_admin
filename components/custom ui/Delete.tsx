@@ -43,13 +43,13 @@ export default function Delete({ id }:DeleteProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-        <Button className="bg-red-1 text-white">
+        <Button className="bg-red-700 text-white">
           <Trash className="h4 w-4" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="bg-white">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-red-1">Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle className="text-red-700">Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
             collection.
@@ -57,7 +57,7 @@ export default function Delete({ id }:DeleteProps) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className="bg-red-1 text-white-1" onClick={onDelete}>Delete</AlertDialogAction>
+          <AlertDialogAction className="bg-red-700 text-white-1" onClick={onDelete}>Delete</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
