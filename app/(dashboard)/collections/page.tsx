@@ -5,12 +5,14 @@ import { DataTable } from "@/components/custom ui/DataTable";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Collections() {
 
   const [loading, setLoading] = useState(false);
   const [collections, setCollections] = useState([]);
+  const router = useRouter();
 
   const getCollections = async () => {
     try {
@@ -34,7 +36,7 @@ export default function Collections() {
         <p className="text-heading2-bold">
           Collections
         </p>
-        <Button className="bg-blue-1 text-white">
+        <Button className="bg-blue-1 text-white" onClick={() => router.push("/collections/new")}>
           <Plus className="h4 w-4 mr-2" /> New collection
         </Button>
       </div>
