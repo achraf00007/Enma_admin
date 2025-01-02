@@ -17,6 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
 import ImageUpload from "../custom ui/ImageUpload";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
@@ -25,7 +27,9 @@ const formSchema = z.object({
 });
 
 export default function CollectionForm() {
-    const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,8 +39,25 @@ export default function CollectionForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // console.log(values);
+    try {
+      setLoading(true);
+      const response = await fetch("/api/collections", {
+        method: "POST",
+        body: JSON.stringify(values),
+      });
+
+      if (response.ok) {
+        setLoading(false);
+        toast.success("Collection created successfully");
+        router.push("/collections");
+      }
+
+    } catch (err) {
+      console.log("[Collection_POST]", err);
+      toast.error("Something went wrong! Please try again");
+    }
   }
 
   return (
@@ -81,9 +102,9 @@ export default function CollectionForm() {
               <FormItem>
                 <FormLabel>Image</FormLabel>
                 <FormControl>
-                  <ImageUpload 
+                  <ImageUpload
                     value={field.value ? [field.value] : []}
-                    onChange={(url)=> field.onChange(url)}
+                    onChange={(url) => field.onChange(url)}
                     onRemove={() => field.onChange("")}
                   />
                 </FormControl>
@@ -91,10 +112,19 @@ export default function CollectionForm() {
               </FormItem>
             )}
           />
-        <div className="flex gap-10">
-          <Button type="button" onClick={() => router.push('/collections') } variant="outline" className="">Discard</Button>
-          <Button type="submit" className="bg-blue-1 text-white">Create</Button>
-        </div>
+          <div className="flex gap-10">
+            <Button
+              type="button"
+              onClick={() => router.push("/collections")}
+              variant="outline"
+              className=""
+            >
+              Discard
+            </Button>
+            <Button type="submit" className="bg-blue-1 text-white">
+              Create
+            </Button>
+          </div>
         </form>
       </Form>
     </div>
