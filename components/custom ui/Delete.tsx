@@ -14,7 +14,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useState } from "react";
 import toast from "react-hot-toast";
 
 interface DeleteProps {
@@ -22,10 +21,8 @@ interface DeleteProps {
 }
 
 export default function Delete({ id }:DeleteProps) {
-    const [loading, setLoading] = useState(false);
     const onDelete = async () => {
         try {
-            setLoading(true);
             const response = await fetch(`/api/collections/${id}`, {
                 method: "DELETE",
             });

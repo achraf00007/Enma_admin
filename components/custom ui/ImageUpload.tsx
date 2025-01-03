@@ -16,7 +16,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   value,
 }) => {
   const onUpload = (result: any) => {
-    onChange(result.info.secure_url);
+    if (result?.info?.secure_url) {
+      onChange(result.info.secure_url);
+    } else {
+      console.error("Upload failed or result structure is unexpected.");
+    }
   };
 
   return (
@@ -45,18 +49,16 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       </div>
 
       <CldUploadWidget uploadPreset="enmaupload" onUpload={onUpload}>
-        {({ open }) => {
-          return (
-            <Button
-              type="button"
-              onClick={() => open()}
-              className="bg-primary-100 border border-primary-300 text-primary-700"
-            >
-              <CloudUpload className="h-4 w-4 mr-2" />
-              Upload Image
-            </Button>
-          );
-        }}
+        {({ open }) => (
+          <Button
+            type="button"
+            onClick={() => open()}
+            className="bg-primary-100 border border-primary-300 text-primary-700"
+          >
+            <CloudUpload className="h-4 w-4 mr-2" />
+            Upload Image
+          </Button>
+        )}
       </CldUploadWidget>
     </div>
   );
