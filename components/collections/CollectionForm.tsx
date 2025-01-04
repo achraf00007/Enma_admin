@@ -157,14 +157,17 @@ export default function CollectionForm({ initialData }: CollectionFormProps) {
                   </FormItem>
                 )}
               />
-              <div className="flex gap-10">
+
+              <Separator className="bg-primary-300 !my-16" />
+
+              <div className="flex justify-end gap-16">
                 <Button
                   type="button"
                   onClick={() => router.push("/collections")}
                   variant="outline"
                   className=""
                 >
-                  <X />
+                  <X className="text-red-700"/>
                   Discard
                 </Button>
                 <Button
