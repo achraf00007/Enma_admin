@@ -66,9 +66,9 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData
-      ? initialData
-      : {
+    defaultValues: //initialData
+    //   ? initialData :
+       {
           title: "",
           description: "",
           media: [],

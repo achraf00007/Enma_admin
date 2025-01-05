@@ -92,7 +92,7 @@ export default function CollectionForm({ initialData }: CollectionFormProps) {
               <p className="text-heading2-bold text-primary-700">
                 Edit Collection
               </p>
-              <Delete id={initialData._id} />
+              <Delete item="collection" id={initialData._id} />
             </div>
           ) : (
             <p className="text-heading2-bold text-primary-700">
