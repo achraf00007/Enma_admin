@@ -127,7 +127,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
               <p className="text-heading2-bold text-primary-700">
                 Edit Product
               </p>
-              <Delete id={initialData._id} />
+              <Delete item="product" id={initialData._id} />
             </div>
           ) : (
             <p className="text-heading2-bold text-primary-700">
