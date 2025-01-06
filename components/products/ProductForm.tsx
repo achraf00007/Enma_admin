@@ -24,6 +24,7 @@ import { ChevronRight, X } from "lucide-react";
 import Loader from "../custom ui/Loader";
 import MultiText from "../custom ui/MultiText";
 import MultiSelect from "../custom ui/MultiSelect";
+import Collection from "@/lib/models/Collection";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
@@ -66,9 +67,14 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: //initialData
-    //   ? initialData :
-       {
+    defaultValues: initialData
+      ? {
+          ...initialData,
+          collections: initialData.collections.map(
+            (collection) => collection._id,
+          ),
+        }
+      : {
           title: "",
           description: "",
           media: [],
@@ -283,8 +289,6 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                   )}
                 />
 
-                
-
                 <FormField
                   control={form.control}
                   name="colors"
@@ -339,34 +343,35 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                   )}
                 />
 
-<FormField
-                  control={form.control}
-                  name="collections"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Collections</FormLabel>
-                      <FormControl>
-                        <MultiSelect
-                          placeholder="Collections"
-                          collections={collections}
-                          value={field.value}
-                          onChange={(_id) =>
-                            field.onChange([...field.value, _id])
-                          }
-                          onRemove={(idToRemove) =>
-                            field.onChange([
-                              ...field.value.filter(
-                                (collectionId) => collectionId !== idToRemove,
-                              ),
-                            ])
-                          }
-                        />
-                      </FormControl>
-                      <FormMessage className="text-red-600" />
-                    </FormItem>
-                  )}
-                />
-
+                {collections.length > 0 && (
+                  <FormField
+                    control={form.control}
+                    name="collections"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Collections</FormLabel>
+                        <FormControl>
+                          <MultiSelect
+                            placeholder="Collections"
+                            collections={collections}
+                            value={field.value}
+                            onChange={(_id) =>
+                              field.onChange([...field.value, _id])
+                            }
+                            onRemove={(idToRemove) =>
+                              field.onChange([
+                                ...field.value.filter(
+                                  (collectionId) => collectionId !== idToRemove,
+                                ),
+                              ])
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage className="text-red-600" />
+                      </FormItem>
+                    )}
+                  />
+                )}
               </div>
 
               <Separator className="bg-primary-300 !my-16" />
