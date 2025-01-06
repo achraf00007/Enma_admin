@@ -24,8 +24,8 @@ import { ChevronRight, X } from "lucide-react";
 import Loader from "../custom ui/Loader";
 
 const formSchema = z.object({
-  title: z.string().min(2).max(20),
-  description: z.string().min(2).max(500).trim(),
+  title: z.string().min(2).max(100),
+  description: z.string().min(2).max(1000).trim(),
   image: z.string(),
 });
 
