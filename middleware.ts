@@ -1,12 +1,34 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)', '/api/:path*'])
+const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)', '/api/:path*']);
 
 export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    await auth.protect()
+  const response = NextResponse.next();
+
+  // Ajouter les en-têtes CORS pour les routes API
+  if (request.nextUrl.pathname.startsWith('/api')) {
+    const origin = request.headers.get('origin') || '*';
+    response.headers.set('Access-Control-Allow-Origin', origin);
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    response.headers.set('Access-Control-Allow-Credentials', 'true');
+
+    // Réponse pour les requêtes preflight OPTIONS
+    if (request.method === 'OPTIONS') {
+      return new Response(null, {
+        status: 204,
+        headers: response.headers,
+      });
+    }
   }
-})
+
+  if (!isPublicRoute(request)) {
+    await auth.protect();
+  }
+
+  return response;
+});
 
 export const config = {
   matcher: [
@@ -15,4 +37,4 @@ export const config = {
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
-}
+};
