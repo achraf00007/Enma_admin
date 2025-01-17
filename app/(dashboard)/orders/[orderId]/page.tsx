@@ -13,7 +13,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string }}) => {
         Order ID: <span className="text-base-medium">{orderDetails._id}</span>
       </p>
       <p className="text-base-bold">
-        Customer name: <span className="text-base-medium">{customer.name}</span>
+        Customer name: <span className="text-base-medium">{customer.fullName}</span>
       </p>
       <p className="text-base-bold">
         Customer phone: <span className="text-base-medium">{customer.phone}</span>
