@@ -1,67 +1,32 @@
-import { NextRequest, NextResponse } from "next/server";
-import Order from "@/lib/models/Order";
 import Customer from "@/lib/models/Customer";
+import Order from "@/lib/models/Order";
 import { connectToDB } from "@/lib/mongoDB";
 
-export const POST = async (req: NextRequest) => {
+import { NextRequest, NextResponse } from "next/server";
+import { format } from "date-fns";
+
+export const GET = async (req: NextRequest) => {
   try {
-    await connectToDB();
+    await connectToDB()
 
-    // Récupération des données de la requête
-    const { products, totalAmount, customer } = await req.json();
+    const orders = await Order.find().sort({ createdAt: "desc" })
 
-    // Vérification basique des données reçues
-    if (!products || !Array.isArray(products) || products.length === 0) {
-      return new NextResponse("Products are required", { status: 400 });
-    }
-    if (!customer || !customer.fullName || !customer.phone) {
-      return new NextResponse("Customer fullName and phone are required", { status: 400 });
-    }
+    const orderDetails = await Promise.all(orders.map(async (order) => {
+      const customer = await Customer.findOne({ phone: order.customer.phone });
+      return {
+        _id: order._id,
+        customer: customer.fullName,
+        products: order.products.length,
+        totalAmount: order.totalAmount,
+        createdAt: format(order.createdAt, "MMM do, yyyy")
+      }
+    }))
 
-    // Gestion du Customer
-    let existingCustomer = await Customer.findOne({ phone: customer.phone });
-
-    if (existingCustomer) {
-      // Mise à jour des informations du client existant
-      existingCustomer.fullName = customer.fullName;
-      existingCustomer.shippingAddress = customer.shippingAddress;
-      existingCustomer.updatedAt = new Date();
-      await existingCustomer.save();
-    } else {
-      // Création d'un nouveau client
-      existingCustomer = await Customer.create({
-        fullName: customer.fullName,
-        phone: customer.phone,
-        shippingAddress: customer.shippingAddress,
-      });
-    }
-
-    // Création de la commande
-    const newOrder = await Order.create({
-      products,
-      customer: {
-        fullName: existingCustomer.fullName,
-        phone: existingCustomer.phone,
-        shippingAddress: existingCustomer.shippingAddress,
-      },
-      totalAmount,
-    });
-
-    // Ajout de l'ID de la commande dans le Customer
-    existingCustomer.orders.push(newOrder._id);
-    await existingCustomer.save();
-
-    // Retour de la réponse
-    return new NextResponse(
-      JSON.stringify({
-        message: "Order and Customer created/updated",
-        order: newOrder,
-        customer: existingCustomer,
-      }),
-      { status: 201, headers: { "Content-Type": "application/json" } }
-    );
-  } catch (error) {
-    console.error("[Order_POST]", error);
+    return NextResponse.json(orderDetails, { status: 200 });
+  } catch (err) {
+    console.log("[orders_GET]", err)
     return new NextResponse("Internal Server Error", { status: 500 });
   }
-};
+}
+
+export const dynamic = "force-dynamic";
