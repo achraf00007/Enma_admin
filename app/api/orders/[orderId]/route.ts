@@ -13,16 +13,13 @@ export const GET = async (req: NextRequest, { params }: { params: { orderId: Str
       model: Product
     })
 
-    console.log("orderDetails =>", orderDetails)
-
     if (!orderDetails) {
       return new NextResponse(JSON.stringify({ message: "Order Not Found" }), { status: 404 })
     }
 
     const customer = await Customer.findOne({ phone: orderDetails.customer.phone });
-
-
     return NextResponse.json({ orderDetails, customer }, { status: 200 })
+    
   } catch (err) {
     console.log("[orderId_GET]", err)
     return new NextResponse("Internal Server Error", { status: 500 })
