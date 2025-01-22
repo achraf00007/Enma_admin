@@ -37,3 +37,9 @@ type OrderItemType = {
   size: string;
   quantity: number;
 };
+
+type CustomerType = {
+  name: string;
+  phone: string;
+  email: string;
+}
